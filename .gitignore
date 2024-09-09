@@ -1,0 +1,7 @@
+build/
+.vscode/
+STM32Make.make
+.stm32env
+STM32-for-VSCode.config.yaml
+STM32Make.make
+TODO.txt

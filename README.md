@@ -1,4 +1,4 @@
-# LoRa-PingPong-gmake-demo
+# LoRa-Data-Transfer
 A sample LoRa ping-pong program for the STM32WL5x dev boards. Built with gmake. 
 
 ## Building

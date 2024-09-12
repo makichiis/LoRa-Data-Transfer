@@ -114,13 +114,17 @@ void RadioOnDioIrq(RadioIrqMasks_t radioIrq);
 
 // UART I/O minilib
 
+/**
+ * @brief Sends `printf`-formatted string to USART2 COM port and returns the
+ * status code of the transmission.
+ */
 HAL_StatusTypeDef uprintf(const char* fmt, ...) {
   va_list args;
   va_start(args, fmt);
   int needed = vsnprintf(NULL, 0, fmt, args);
   
   va_start(args, fmt);
-  char* uartbuf = calloc(1, needed + 1);
+  char* uartbuf = calloc(1, needed + 1); // null byte not needed, but included for safety anyway.
   vsnprintf(uartbuf, needed, fmt, args);
   va_end(args);
 
@@ -132,6 +136,22 @@ HAL_StatusTypeDef uprintf(const char* fmt, ...) {
   free(uartbuf);
   return status;
 }
+
+// # LoRa Data Transfer Protocol Structure
+// TODO: Research checksum generation/evaluation
+
+// ## Packet Structure
+// - ID: 1 byte
+// - Length: 1 byte
+// - Body: u8[Length]
+
+// ## Packet Body Types
+
+// ### Handshake
+// Establishes a connection between the client (sender) and host (receiver)
+
+// Structure:
+// - 
 
 /* USER CODE END 0 */
 

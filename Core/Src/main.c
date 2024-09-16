@@ -38,13 +38,22 @@
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 
+/**
+ * @brief Describes whether this module is the sender or the recipient
+ * of the data in this stream. Should be specified on a configuration/hardware
+ * level. (TODO)
+ */
 typedef enum state_t 
 {
   STATE_NULL,
-  STATE_MASTER,
-  STATE_SLAVE
+  STATE_SENDER,
+  STATE_RECIPIENT 
 } state_t;
 
+/**
+ * @brief Describes what I/O state the LoRa module is
+ * set to. Should be set by callbacks.
+ */
 typedef enum substate_t 
 {
   SSTATE_NULL,
@@ -52,6 +61,12 @@ typedef enum substate_t
   SSTATE_TX
 } substate_t;
 
+/**
+ * @brief Context wrapper for LoRa RX/TX buffer.
+ * @note DO NOT MODIFY THE BUFFER SIZE, IT IS WRITTEN
+ * ON A HARDWARE-LEVEL AND USELESS PADDING WILL NOT
+ * BE WRITTEN TO, AND MAY RESULT IN UNDEFINED BEHAVIOR.
+ */
 typedef struct LoRaHandle
 {
   state_t state;

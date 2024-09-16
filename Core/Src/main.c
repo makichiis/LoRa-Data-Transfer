@@ -90,14 +90,34 @@ void (*volatile eventReceptor)(LoRaHandle *const fsm);
 PacketParams_t packetParams;  // TODO: this is lazy...
 
 // IRQ callbacks
+
+/**
+ * @brief TX_DONE interrupt callback. 
+ */
 void radio_on_tx_done(LoRaHandle *const handle);
 
+/**
+ * @brief RX_DONE interrupt callback. The Rx buffer is readable at this
+ * callback.
+ */
 void radio_on_rx_done(LoRaHandle *const handle);
 
+/**
+ * @brief Tx timeout callback. Should be used to report errors sending
+ * data to the recipient.
+ */
 void radio_on_tx_timeout(LoRaHandle *const handle);
 
+/**
+ * @brief Rx timeout callback. Should be used to report when data cannot
+ * be received during a data transfer. Consider sending a keep-alive ping
+ * with the current data index to attempt to revive the data stream.
+ */
 void radio_on_rx_timeout(LoRaHandle *const handle);
 
+/**
+ * @brief Handle general errors.
+ */
 void radio_on_crc_error(LoRaHandle *const handle);
 
 const RadioLoRaBandwidths_t Bandwidths[] = { LORA_BW_125, LORA_BW_250, LORA_BW_500 };

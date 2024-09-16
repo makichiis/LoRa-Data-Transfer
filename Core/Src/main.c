@@ -89,6 +89,17 @@ typedef struct LoRaHandle
 void (*volatile eventReceptor)(LoRaHandle *const fsm);
 PacketParams_t packetParams;  // TODO: this is lazy...
 
+// IRQ callbacks
+void radio_on_tx_done(LoRaHandle *const handle);
+
+void radio_on_rx_done(LoRaHandle *const handle);
+
+void radio_on_tx_timeout(LoRaHandle *const handle);
+
+void radio_on_rx_timeout(LoRaHandle *const handle);
+
+void radio_on_crc_error(LoRaHandle *const handle);
+
 const RadioLoRaBandwidths_t Bandwidths[] = { LORA_BW_125, LORA_BW_250, LORA_BW_500 };
 
 /* USER CODE END PV */
@@ -382,6 +393,28 @@ void radioInit(void)
 }
 
 
+// IRQ callbacks
+void radio_on_tx_done(LoRaHandle *const handle) {
+  uprintf("Transfer complete.\n");
+}
+
+void radio_on_rx_done(LoRaHandle *const handle) {
+  uprintf("Recv complete.\n");
+}
+
+void radio_on_tx_timeout(LoRaHandle *const handle) {
+  uprintf("Error: Transfer timeout.\n");
+}
+
+void radio_on_rx_timeout(LoRaHandle *const handle) {
+  uprintf("Error: Recv timeout.\n");
+}
+
+void radio_on_crc_error(LoRaHandle *const handle) {
+  uprintf("Error: General Recv error.\n");
+}
+
+
 /**
   * @brief  Receive data trough SUBGHZSPI peripheral
   * @param  radioIrq  interrupt pending status information
@@ -392,27 +425,24 @@ void RadioOnDioIrq(RadioIrqMasks_t radioIrq)
   uprintf("incoming radio interrupt...\n");
   switch (radioIrq)
   {
-    // case IRQ_TX_DONE:
-    //   eventReceptor = eventTxDone;
-    //   break;
-    // case IRQ_RX_DONE:
-    //   eventReceptor = eventRxDone;
-    //   break;
-    // case IRQ_RX_TX_TIMEOUT:
-    //   if (SUBGRF_GetOperatingMode() == MODE_TX)
-    //   {
-    //     eventReceptor = eventTxTimeout;
-    //   }
-    //   else if (SUBGRF_GetOperatingMode() == MODE_RX)
-    //   {
-    //     eventReceptor = eventRxTimeout;
-    //   }
-    //   break;
-    // case IRQ_CRC_ERROR:
-    //   eventReceptor = eventRxError;
-    //   break;
-    // default:
-    //   break;
+    case IRQ_TX_DONE:
+      eventReceptor = radio_on_tx_done;
+      break;
+    case IRQ_RX_DONE:
+      eventReceptor = radio_on_rx_done;
+      break;
+    case IRQ_RX_TX_TIMEOUT:
+      if (SUBGRF_GetOperatingMode() == MODE_TX) {
+        eventReceptor = radio_on_tx_timeout;
+      } else if (SUBGRF_GetOperatingMode() == MODE_RX) {
+        eventReceptor = radio_on_rx_timeout;
+      }
+      break;
+    case IRQ_CRC_ERROR:
+      eventReceptor = radio_on_crc_error;
+      break;
+    default:
+      __builtin_unreachable();
   }
 }
 

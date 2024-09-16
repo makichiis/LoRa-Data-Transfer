@@ -311,7 +311,7 @@ int main(void)
                           IRQ_RADIO_NONE );
   SUBGRF_SetSwitch(RFO_LP, RFSWITCH_RX);
   SUBGRF_SetRx(lora_handle.rxTimeout << 6);
-  lora_handle.state = STATE_MASTER;
+  lora_handle.state = STATE_SENDER;
   lora_handle.subState = SSTATE_RX;
 
   uprintf("Starting...\r\n");

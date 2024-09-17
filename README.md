@@ -34,6 +34,18 @@ If you still get permissions or device I/O errors, try running as root
 $ sudo $(realpath .)/configure-port.sh ...
 ```
 
+#### Using Configuration Scripts 
+You can find all ACM tty ports using `scan-ports.sh` (make sure to configure permissions if necessary).
+
+Assuming two STM32 devices are connected:
+```sh
+$ chmod +x ./scan-ports.sh 
+$ ./scan-ports.sh 
+/dev/ttyACM0
+/dev/ttyACM1 
+$ ./configure-ports $(./scan-ports.sh) # configure all connected devices 
+```
+
 <!-- ### Ignore:
 GNU Make -- as well as whatever embedded ARM compiler preferred for your
 system -- is **REQUIRED** to build this project.

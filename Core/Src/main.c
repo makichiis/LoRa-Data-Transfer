@@ -104,6 +104,16 @@ typedef struct LoRaHandle
 void (*volatile eventReceptor)(LoRaHandle *const fsm);
 PacketParams_t packetParams;  // TODO: this is lazy...
 
+const RadioLoRaBandwidths_t Bandwidths[] = { LORA_BW_125, LORA_BW_250, LORA_BW_500 };
+
+/* USER CODE END PV */
+
+/* Private function prototypes -----------------------------------------------*/
+void SystemClock_Config(void);
+/* USER CODE BEGIN PFP */
+
+void radioInit(void);
+
 // IRQ callbacks
 
 /**
@@ -135,15 +145,6 @@ void radio_on_rx_timeout(LoRaHandle *const handle);
  */
 void radio_on_crc_error(LoRaHandle *const handle);
 
-const RadioLoRaBandwidths_t Bandwidths[] = { LORA_BW_125, LORA_BW_250, LORA_BW_500 };
-
-/* USER CODE END PV */
-
-/* Private function prototypes -----------------------------------------------*/
-void SystemClock_Config(void);
-/* USER CODE BEGIN PFP */
-
-void radioInit(void);
 void RadioOnDioIrq(RadioIrqMasks_t radioIrq);
 
 
@@ -435,6 +436,8 @@ void radio_on_tx_done(LoRaHandle *const handle) {
 
 void radio_on_rx_done(LoRaHandle *const handle) {
   uprintf("Recv complete.\n");
+
+  uprintf("Contents of rx buffer: %s\n", handle->rxBuffer); // unsafe btw
 }
 
 void radio_on_tx_timeout(LoRaHandle *const handle) {

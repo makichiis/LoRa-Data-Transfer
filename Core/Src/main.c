@@ -294,7 +294,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 
   // get random number
-  uint32_t rnd = 0;
+  uint32_t rnd = 0;   
   SUBGRF_SetDioIrqParams(IRQ_RADIO_NONE, IRQ_RADIO_NONE, IRQ_RADIO_NONE, IRQ_RADIO_NONE);
   rnd = SUBGRF_GetRandom();
 
@@ -310,7 +310,7 @@ int main(void)
                           IRQ_RADIO_NONE,
                           IRQ_RADIO_NONE );
   SUBGRF_SetSwitch(RFO_LP, RFSWITCH_RX);
-  SUBGRF_SetRx(lora_handle.rxTimeout << 6);
+  SUBGRF_SetRx(lora_handle.rxTimeout << 6); 
   lora_handle.state = STATE_SENDER;
   lora_handle.subState = SSTATE_RX;
 

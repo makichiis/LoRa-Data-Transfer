@@ -62,6 +62,28 @@ typedef enum substate_t
 } substate_t;
 
 /**
+ * @brief Describes the current state of the data transfer stream.
+ * The stream is either in handshake state, keep alive state, or
+ * data request state.
+ * 
+ * DT_HANDSHAKE - Establishing a connection between boards. At this
+ *                stage, the breadth of length of the data is
+ *                established by the sender. 
+ * DT_KEEPALIVE - Confirming connection state of board when no data
+ *                is being transferred.
+ * DT_SENDDTIDX - "Send data at index", specifies what segment of the
+ *                data stream to send this lifecycle. In this state,
+ *                a 4 (+ header size) byte packet is sent with the
+ *                value "DONE".
+ * (TODO) 
+ */
+typedef enum DataTransferState_t {
+  DT_HANDSHAKE, // establishing connection between chips
+  DT_KEEPALIVE, // confirming integrity of connection
+  DT_SENDDTIDX  // send data transfer at index 
+} DataTransferState_t;
+
+/**
  * @brief Context wrapper for LoRa RX/TX buffer.
  * @note DO NOT MODIFY THE BUFFER SIZE, IT IS WRITTEN
  * ON A HARDWARE-LEVEL AND USELESS PADDING WILL NOT
